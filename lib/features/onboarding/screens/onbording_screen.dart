@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:softvence_task/common_widget/page_indicator.dart';
 import 'package:softvence_task/constant/app_colors.dart';
+import 'package:softvence_task/features/onboarding/screens/location_tracker/location_tracker.dart';
 import 'package:softvence_task/features/onboarding/widgets/button/ButtonWidget.dart';
 
 import '../widgets/onboarding_page_content/onboarding_page_content.dart';
@@ -66,7 +67,10 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
       );
     } else {
       // Handle action for the last page, e.g., navigate to home screen
-      print("Onboarding complete!");
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => LocationTracker()),
+      );
     }
   }
 
@@ -148,7 +152,12 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                 SizedBox(
                   width: double.infinity,
                   height: 56,
-                  child: Buttonwidget(onTap: _onNextPressed),
+                  child: Buttonwidget(
+                    borderColor: ColorConstants.primaryPurple,
+                    buttonbgColor: ColorConstants.primaryPurple,
+                    onTap: _onNextPressed,
+                    buttonText: "Next",
+                  ),
                 ),
               ],
             ),
