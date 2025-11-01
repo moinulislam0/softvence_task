@@ -30,7 +30,7 @@ class Buttonwidget extends StatelessWidget {
         style: const TextStyle(
           color: ColorConstants.textWhite,
           fontSize: 18,
-          fontWeight: FontWeight.w600,
+          fontWeight: FontWeight.w500,
         ),
       ),
     );

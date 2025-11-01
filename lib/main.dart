@@ -11,6 +11,7 @@ class MyApps extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      theme: ThemeData(fontFamily: "poppins"),
       debugShowCheckedModeBanner: false,
       home: OnboardingScreen(),
     );
