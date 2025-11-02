@@ -8,4 +8,6 @@ class ColorConstants {
   static const Color textGrey = Color(0xFFB0B0C3);
   static const Color indicatorActive = Color(0xFF6200EE);
   static const Color indicatorInactive = Color(0xFF424262);
+  static const Color beginColor = Color(0xFF0F063C);
+  static const Color endColor = Color(0xFF0B184D);
 }

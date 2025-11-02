@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:softvence_task/common_widget/page_indicator.dart';
 import 'package:softvence_task/constant/app_colors.dart';
@@ -6,7 +7,6 @@ import 'package:softvence_task/features/onboarding/widgets/button/ButtonWidget.d
 
 import '../widgets/onboarding_page_content/onboarding_page_content.dart';
 
-// This is the main screen for the onboarding feature.
 class OnboardingScreen extends StatefulWidget {
   const OnboardingScreen({super.key});
 
@@ -17,8 +17,8 @@ class OnboardingScreen extends StatefulWidget {
 class _OnboardingScreenState extends State<OnboardingScreen> {
   final PageController _pageController = PageController();
   int _currentPage = 0;
+  Timer? _timer;
 
-  // Data for the onboarding pages. Can be expanded easily.
   final List<Map<String, String>> _onboardingData = [
     {
       'image': 'assets/images/screen1.png',
@@ -26,7 +26,6 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
       'description':
           'From hidden gems to iconic destinations, we make travel simple, inspiring, and unforgettable. Start your next adventure today.',
     },
-    // Add more pages here if needed
     {
       'image': 'assets/images/screen2.png',
       'title': 'Explore new horizons one step at a time',
@@ -51,10 +50,30 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
         });
       }
     });
+
+    // Start auto-scrolling
+    _startAutoScroll();
+  }
+
+  void _startAutoScroll() {
+    _timer = Timer.periodic(const Duration(seconds: 3), (Timer timer) {
+      if (_currentPage < _onboardingData.length - 1) {
+        _currentPage++;
+      } else {
+        _currentPage = 0;
+      }
+
+      _pageController.animateToPage(
+        _currentPage,
+        duration: const Duration(milliseconds: 400),
+        curve: Curves.easeInOut,
+      );
+    });
   }
 
   @override
   void dispose() {
+    _timer?.cancel();
     _pageController.dispose();
     super.dispose();
   }
@@ -66,7 +85,6 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
         curve: Curves.easeInOut,
       );
     } else {
-      // Handle action for the last page, e.g., navigate to home screen
       Navigator.push(
         context,
         MaterialPageRoute(builder: (context) => LocationTracker()),
@@ -80,7 +98,6 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
       backgroundColor: ColorConstants.darkBackground,
       body: Stack(
         children: [
-          // Background content (Image/Icon + Gradient)
           PageView.builder(
             controller: _pageController,
             itemCount: _onboardingData.length,
@@ -92,14 +109,16 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
               );
             },
           ),
-          // "Skip" Button
+
           Positioned(
             top: 50,
             right: 20,
             child: TextButton(
               onPressed: () {
-                // Handle skip action
-                print("Skip pressed");
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => LocationTracker()),
+                );
               },
               child: const Text(
                 'Skip',
@@ -111,17 +130,18 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
               ),
             ),
           ),
-          // Bottom content (Text, Indicators, Button)
+
           Positioned(
             bottom: 90,
             left: 20,
             right: 20,
+
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
                   _onboardingData[_currentPage]['title']!,
-                  key: ValueKey<int>(_currentPage), // Helps with animation
+                  key: ValueKey<int>(_currentPage),
                   style: const TextStyle(
                     color: ColorConstants.textWhite,
                     fontSize: 32,
@@ -132,7 +152,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                 const SizedBox(height: 16),
                 Text(
                   _onboardingData[_currentPage]['description']!,
-                  key: ValueKey<int>(_currentPage + 100), // Unique key
+                  key: ValueKey<int>(_currentPage + 100),
                   style: const TextStyle(
                     color: ColorConstants.textGrey,
                     fontSize: 16,
