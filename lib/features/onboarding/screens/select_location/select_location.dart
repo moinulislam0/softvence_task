@@ -38,6 +38,25 @@ class SelectLocationState extends State<SelectLocation> {
     _alarms.sort((a, b) => a.dateTime.compareTo(b.dateTime));
   }
 
+  void _handleAlarmToggle(Alarm alarm, bool value) {
+    setState(() {
+      alarm.isActive = value;
+    });
+
+
+    if (value) {
+    
+      _notificationService.scheduleAlarm(
+        alarm.id,
+        alarm.dateTime,
+        _locationController.text.trim(),
+      );
+    } else {
+   
+      _notificationService.cancelAlarm(alarm.id);
+    }
+  }
+
   Future<void> _pickDateTime() async {
     final TimeOfDay? pickedTime = await showTimePicker(
       context: context,
@@ -85,32 +104,20 @@ class SelectLocationState extends State<SelectLocation> {
     int newId = DateTime.now().millisecondsSinceEpoch.remainder(100000);
     Alarm newAlarm = Alarm(id: newId, dateTime: finalDateTime);
 
-    // সাময়িকভাবে এই লাইনটি বন্ধ রেখে টেস্ট করতে পারেন
-    await _notificationService.scheduleAlarm(
-      newId,
-      finalDateTime,
-      _locationController.text.trim(),
-    );
-
     setState(() {
       _alarms.add(newAlarm);
       _alarms.sort((a, b) => a.dateTime.compareTo(b.dateTime));
     });
-  }
 
-  void _handleAlarmToggle(Alarm alarm, bool value) {
-    setState(() {
-      alarm.isActive = value;
-    });
-
-    if (value) {
-      _notificationService.scheduleAlarm(
-        alarm.id,
-        alarm.dateTime,
+ 
+    try {
+      await _notificationService.scheduleAlarm(
+        newId,
+        finalDateTime,
         _locationController.text.trim(),
       );
-    } else {
-      _notificationService.cancelAlarm(alarm.id);
+    } catch (e) {
+      print('Error scheduling alarm: $e');
     }
   }
 
