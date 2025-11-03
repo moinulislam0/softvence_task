@@ -91,10 +91,14 @@ class SelectLocationState extends State<SelectLocation> {
       _locationController.text.trim(),
     );
 
+    // --- এই অংশটিই আপনার নতুন অ্যালার্ম UI তে যোগ করার কাজটি করে ---
     setState(() {
-      _alarms.add(newAlarm);
-      _alarms.sort((a, b) => a.dateTime.compareTo(b.dateTime));
+      _alarms.add(newAlarm); // 1. নতুন অ্যালার্ম লিস্টে যোগ হয়
+      _alarms.sort(
+        (a, b) => a.dateTime.compareTo(b.dateTime),
+      ); // 2. লিস্টটি সময় অনুযায়ী সাজানো হয়
     });
+    // setState কল হওয়ার কারণে UI স্বয়ংক্রিয়ভাবে আপডেট হয়ে যায় এবং নতুন অ্যালার্মটি দেখা যায়।
   }
 
   void _handleAlarmToggle(Alarm alarm, bool value) {
@@ -134,7 +138,6 @@ class SelectLocationState extends State<SelectLocation> {
           ),
         ),
         child: SingleChildScrollView(
-     
           padding: const EdgeInsets.fromLTRB(16, 4, 16, 80),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -212,11 +215,7 @@ class SelectLocationState extends State<SelectLocation> {
           ),
         ),
       ),
-
- 
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
-
-     
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
           await _pickDateTime();
