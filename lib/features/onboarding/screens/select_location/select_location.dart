@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:softvence_task/common_widget/alarm_Box/alarm_box.dart';
 import 'package:softvence_task/constant/app_colors.dart';
 import 'package:softvence_task/helper/notification_service/notification_service.dart';
@@ -37,6 +38,13 @@ class SelectLocationState extends State<SelectLocation> {
 
     _alarms.sort((a, b) => a.dateTime.compareTo(b.dateTime));
   }
+  
+  Future<bool> isExactAlarmAllowed() async {
+    final androidPlugin = _notificationService.flutterLocalNotificationsPlugin
+        .resolvePlatformSpecificImplementation<
+            AndroidFlutterLocalNotificationsPlugin>();
+    return await androidPlugin?.areNotificationsEnabled() ?? false;
+  }
 
    void _handleAlarmToggle(Alarm alarm, bool value) {
     setState(() {
@@ -65,68 +73,79 @@ class SelectLocationState extends State<SelectLocation> {
   }
 
   Future<void> _pickDateTime() async {
-    final TimeOfDay? pickedTime = await showTimePicker(
-      context: context,
-      initialTime: TimeOfDay.now(),
-      builder: (BuildContext context, Widget? child) {
-        return MediaQuery(
-          data: MediaQuery.of(context).copyWith(alwaysUse24HourFormat: false),
-          child: child ?? const SizedBox.shrink(),
-        );
-      },
-    );
+  final TimeOfDay? pickedTime = await showTimePicker(
+    context: context,
+    initialTime: TimeOfDay.now(),
+    builder: (BuildContext context, Widget? child) {
+      return MediaQuery(
+        data: MediaQuery.of(context).copyWith(alwaysUse24HourFormat: false),
+        child: child ?? const SizedBox.shrink(),
+      );
+    },
+  );
 
-    if (pickedTime == null) return;
+  if (pickedTime == null) return;
+  if (!mounted) return;
 
+  final DateTime? pickedDate = await showDatePicker(
+    context: context,
+    initialDate: DateTime.now(),
+    firstDate: DateTime.now(),
+    lastDate: DateTime(2101),
+  );
+
+  if (pickedDate == null) return;
+
+  final DateTime finalDateTime = DateTime(
+    pickedDate.year,
+    pickedDate.month,
+    pickedDate.day,
+    pickedTime.hour,
+    pickedTime.minute,
+  );
+
+  if (finalDateTime.isBefore(DateTime.now())) {
     if (!mounted) return;
-
-    final DateTime? pickedDate = await showDatePicker(
-      context: context,
-      initialDate: DateTime.now(),
-      firstDate: DateTime.now(),
-      lastDate: DateTime(2101),
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Text('Please select a future date and time'),
+        backgroundColor: Colors.red,
+      ),
     );
-
-    if (pickedDate == null) return;
-
-    final DateTime finalDateTime = DateTime(
-      pickedDate.year,
-      pickedDate.month,
-      pickedDate.day,
-      pickedTime.hour,
-      pickedTime.minute,
-    );
-
-    if (finalDateTime.isBefore(DateTime.now())) {
-      if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Please select a future date and time'),
-          backgroundColor: Colors.red,
-        ),
-      );
-      return;
-    }
-
-    int newId = DateTime.now().millisecondsSinceEpoch.remainder(100000);
-    Alarm newAlarm = Alarm(id: newId, dateTime: finalDateTime);
-
-    setState(() {
-      _alarms.add(newAlarm);
-      _alarms.sort((a, b) => a.dateTime.compareTo(b.dateTime));
-    });
-
- 
-    try {
-      await _notificationService.scheduleAlarm(
-        newId,
-        finalDateTime,
-        _locationController.text.trim(),
-      );
-    } catch (e) {
-      print('Error scheduling alarm: $e');
-    }
+    return;
   }
+
+  int newId = DateTime.now().millisecondsSinceEpoch.remainder(100000);
+  Alarm newAlarm = Alarm(id: newId, dateTime: finalDateTime);
+
+  setState(() {
+    _alarms.add(newAlarm);
+    _alarms.sort((a, b) => a.dateTime.compareTo(b.dateTime));
+  });
+
+  
+  final isAllowed = await isExactAlarmAllowed();
+  if (!isAllowed) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Text('Please allow exact alarm permission from settings'),
+        backgroundColor: Colors.orange,
+      ),
+    );
+    return;
+  }
+
+  try {
+    await _notificationService.scheduleAlarm(
+      newId,
+      finalDateTime,
+      _locationController.text.trim(),
+    );
+  } catch (e) {
+    print('Error scheduling alarm: $e');
+  }
+}
+
 
   @override
   Widget build(BuildContext context) {
