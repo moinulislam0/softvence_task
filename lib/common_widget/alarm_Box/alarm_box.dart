@@ -17,6 +17,9 @@ class AlarmBox extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final String timeString = DateFormat('h:mm a').format(dateTime);
+    final String dateString = DateFormat('d, MMMM yyyy').format(dateTime);
+
     return Container(
       padding: const EdgeInsets.only(left: 16, right: 16, top: 10, bottom: 10),
       decoration: BoxDecoration(
@@ -28,7 +31,7 @@ class AlarmBox extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Text(
-            DateFormat('h:mm a').format(dateTime),
+            timeString,
             style: const TextStyle(color: Colors.white, fontSize: 18),
           ),
           Wrap(
@@ -36,10 +39,7 @@ class AlarmBox extends StatelessWidget {
             crossAxisAlignment: WrapCrossAlignment.center,
             spacing: 8.0,
             children: [
-              Text(
-                DateFormat('d, MMMM yyyy').format(dateTime),
-                style: const TextStyle(color: Colors.white70),
-              ),
+              Text(dateString, style: const TextStyle(color: Colors.white70)),
               AppSwitch(
                 initialValue: isActive,
                 focusColor: const Color(0XFF5200FF),
