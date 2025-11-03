@@ -58,6 +58,9 @@ class NotificationService {
           importance: Importance.max,
           priority: Priority.high,
           icon: '@mipmap/ic_launcher',
+          sound: RawResourceAndroidNotificationSound('alarm_sound'),
+          playSound: true,
+          enableVibration: true,
         ),
         iOS: DarwinNotificationDetails(
           sound: 'default.wav',
@@ -67,6 +70,7 @@ class NotificationService {
         ),
       ),
       androidScheduleMode: AndroidScheduleMode.alarmClock,
+      matchDateTimeComponents: DateTimeComponents.dateAndTime,
     );
   }
 

@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:softvence_task/features/onboarding/screens/onbording_screen.dart';
 import 'package:softvence_task/helper/notification_service/notification_service.dart';
 
-Future<void> main() async {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await NotificationService().init();
+  await NotificationService().init(); 
   runApp(MyApps());
 }
 
