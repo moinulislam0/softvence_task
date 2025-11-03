@@ -1,16 +1,15 @@
-<img width="387" height="814" alt="image" src="https://github.com/user-attachments/assets/4c57d972-0430-4199-b7eb-c8343b0ae455" />
-<img width="387" height="814" alt="image" src="https://github.com/user-attachments/assets/5414b1c8-742e-4e8c-9d9a-bedbfc23d9a2" />
-<img width="387" height="814" alt="image" src="https://github.com/user-attachments/assets/a99a2100-72b9-4eb9-85af-3cb83d94cc37" />
-<img width="387" height="814" alt="image" src="https://github.com/user-attachments/assets/f4f2845b-8bda-4e47-b265-a407527e8a04" />
-<img width="387" height="814" alt="image" src="https://github.com/user-attachments/assets/9f5462e4-7df2-4907-8cf7-38c5ed332ee7" />
-<img width="387" height="814" alt="image" src="https://github.com/user-attachments/assets/854fa038-11a1-4909-abb4-5f1789d5642c" />
-<img width="387" height="814" alt="image" src="https://github.com/user-attachments/assets/7c2c97ef-6a25-4817-836d-bf760b8eb909" />
-<img width="387" height="814" alt="image" src="https://github.com/user-attachments/assets/c315fbe4-b567-4870-b38e-ad05d8f517e4" />
-
-<img width="387" height="814" alt="image" src="https://github.com/user-attachments/assets/ef074fb7-c8f1-4d66-a0a3-b1f4dbe01469" />
 
 
+<img width="422" height="962" alt="image" src="https://github.com/user-attachments/assets/0e9a8f75-3974-4521-b9b1-7f4fd97e9e35" />
+<img width="422" height="962" alt="image" src="https://github.com/user-attachments/assets/1e72a337-0f08-4d60-81f3-b88d919979fc" />
 
+<img width="422" height="962" alt="image" src="https://github.com/user-attachments/assets/e6161318-cdb8-4591-8ea6-e6032bd81615" />
 
+<img width="422" height="962" alt="image" src="https://github.com/user-attachments/assets/51dc25f3-2d43-4982-876d-a911606c1052" />
+<img width="422" height="962" alt="image" src="https://github.com/user-attachments/assets/3ae69056-c3d8-4992-81a7-5029aaf49153" />
 
+<img width="422" height="962" alt="image" src="https://github.com/user-attachments/assets/4d490553-3fc3-4557-af71-dd0937e3a749" />
+<img width="422" height="962" alt="image" src="https://github.com/user-attachments/assets/5ff3cf69-0947-4cc8-a7a0-9e0530069285" />
+<img width="422" height="962" alt="image" src="https://github.com/user-attachments/assets/5c1b6524-abc5-4254-b3c7-87844f0d2152" />
 
+<img width="422" height="962" alt="image" src="https://github.com/user-attachments/assets/01e5e8a2-3d8d-48dc-9be9-52f72ad0f78f" />
