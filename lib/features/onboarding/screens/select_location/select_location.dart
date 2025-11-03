@@ -134,7 +134,8 @@ class SelectLocationState extends State<SelectLocation> {
           ),
         ),
         child: SingleChildScrollView(
-          padding: const EdgeInsets.fromLTRB(16, 4, 16, 120),
+     
+          padding: const EdgeInsets.fromLTRB(16, 4, 16, 80),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -211,18 +212,18 @@ class SelectLocationState extends State<SelectLocation> {
           ),
         ),
       ),
-      floatingActionButton: Transform.translate(
-        offset: const Offset(0, -90),
-        child: FloatingActionButton(
-          onPressed: () async {
-            await _pickDateTime();
-          },
-          backgroundColor: const Color(0XFF211A46),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(30),
-          ),
-          child: const Icon(Icons.add, color: Colors.white, size: 30),
-        ),
+
+ 
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+
+     
+      floatingActionButton: FloatingActionButton(
+        onPressed: () async {
+          await _pickDateTime();
+        },
+        backgroundColor: const Color(0XFF211A46),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
+        child: const Icon(Icons.add, color: Colors.white, size: 30),
       ),
     );
   }
