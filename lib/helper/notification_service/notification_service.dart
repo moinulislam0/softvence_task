@@ -15,20 +15,12 @@ class NotificationService {
     const AndroidInitializationSettings initializationSettingsAndroid =
         AndroidInitializationSettings('@mipmap/ic_launcher');
 
-    const DarwinInitializationSettings initializationSettingsIOS =
-        DarwinInitializationSettings(
-          requestSoundPermission: true,
-          requestBadgePermission: true,
-          requestAlertPermission: true,
-        );
-
     const InitializationSettings initializationSettings =
-        InitializationSettings(
-          android: initializationSettingsAndroid,
-          iOS: initializationSettingsIOS,
-        );
+        InitializationSettings(android: initializationSettingsAndroid);
 
     tz.initializeTimeZones();
+    tz.setLocalLocation(tz.getLocation('Asia/Dhaka'));
+
     await flutterLocalNotificationsPlugin.initialize(initializationSettings);
 
     final androidPlugin = flutterLocalNotificationsPlugin
@@ -58,19 +50,11 @@ class NotificationService {
           importance: Importance.max,
           priority: Priority.high,
           icon: '@mipmap/ic_launcher',
-          sound: RawResourceAndroidNotificationSound('alarm_sound'),
           playSound: true,
           enableVibration: true,
         ),
-        iOS: DarwinNotificationDetails(
-          sound: 'default.wav',
-          presentAlert: true,
-          presentBadge: true,
-          presentSound: true,
-        ),
       ),
-      androidScheduleMode: AndroidScheduleMode.alarmClock,
-      matchDateTimeComponents: DateTimeComponents.dateAndTime,
+      androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
     );
   }
 

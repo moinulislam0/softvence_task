@@ -25,7 +25,7 @@ class OnboardingPageContent extends StatelessWidget {
         children: [
           Container(
             width: double.infinity,
-            height: 500,
+            height: 450,
             child: Image.asset(
               image,
               fit: BoxFit.contain,

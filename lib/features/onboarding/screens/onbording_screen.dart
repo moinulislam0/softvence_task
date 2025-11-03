@@ -132,10 +132,10 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
           ),
 
           Positioned(
-            bottom: 90,
+            bottom: 20,
             left: 20,
             right: 20,
-            top: 490,
+            top: 440,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -145,11 +145,12 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                   key: ValueKey<int>(_currentPage),
                   style: const TextStyle(
                     color: ColorConstants.textWhite,
-                    fontSize: 32,
+                    fontSize: 26,
                     fontWeight: FontWeight.w700,
                     height: 1.2,
                   ),
                 ),
+                const SizedBox(height: 10),
                 Text(
                   _onboardingData[_currentPage]['description']!,
                   key: ValueKey<int>(_currentPage + 100),
@@ -160,7 +161,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                     height: 1.5,
                   ),
                 ),
-                const SizedBox(height: 30),
+                const SizedBox(height: 20),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: List.generate(
@@ -168,7 +169,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                     (index) => PageIndicator(isActive: index == _currentPage),
                   ),
                 ),
-                const SizedBox(height: 10),
+                const SizedBox(height: 25),
                 SizedBox(
                   width: double.infinity,
                   height: 56,

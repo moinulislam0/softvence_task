@@ -38,21 +38,28 @@ class SelectLocationState extends State<SelectLocation> {
     _alarms.sort((a, b) => a.dateTime.compareTo(b.dateTime));
   }
 
-  void _handleAlarmToggle(Alarm alarm, bool value) {
+   void _handleAlarmToggle(Alarm alarm, bool value) {
     setState(() {
       alarm.isActive = value;
     });
 
-
     if (value) {
-    
+      if (alarm.dateTime.isBefore(DateTime.now())) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Selected time already passed. Choose future time.'),
+            backgroundColor: Colors.red,
+          ),
+        );
+        return;
+      }
+
       _notificationService.scheduleAlarm(
         alarm.id,
         alarm.dateTime,
         _locationController.text.trim(),
       );
     } else {
-   
       _notificationService.cancelAlarm(alarm.id);
     }
   }
