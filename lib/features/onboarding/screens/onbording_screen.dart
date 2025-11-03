@@ -135,10 +135,11 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
             bottom: 90,
             left: 20,
             right: 20,
-
+            top: 490,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                const SizedBox(height: 20),
                 Text(
                   _onboardingData[_currentPage]['title']!,
                   key: ValueKey<int>(_currentPage),
@@ -149,7 +150,6 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                     height: 1.2,
                   ),
                 ),
-                const SizedBox(height: 16),
                 Text(
                   _onboardingData[_currentPage]['description']!,
                   key: ValueKey<int>(_currentPage + 100),
@@ -168,7 +168,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                     (index) => PageIndicator(isActive: index == _currentPage),
                   ),
                 ),
-                const SizedBox(height: 40),
+                const SizedBox(height: 10),
                 SizedBox(
                   width: double.infinity,
                   height: 56,

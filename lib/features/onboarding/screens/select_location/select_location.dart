@@ -28,25 +28,40 @@ class SelectLocationState extends State<SelectLocation> {
   void initState() {
     super.initState();
     _locationController.text = widget.initialLocation;
+
+    _alarms.addAll([
+      Alarm(id: 1, dateTime: DateTime(2024, 1, 15, 6, 30), isActive: true),
+      Alarm(id: 2, dateTime: DateTime(2024, 1, 15, 8, 0), isActive: false),
+      Alarm(id: 3, dateTime: DateTime(2024, 1, 15, 10, 15), isActive: true),
+    ]);
+
+    _alarms.sort((a, b) => a.dateTime.compareTo(b.dateTime));
   }
 
   Future<void> _pickDateTime() async {
-    DateTime now = DateTime.now();
-    final DateTime? pickedDate = await showDatePicker(
-      context: context,
-      initialDate: now,
-      firstDate: now,
-      lastDate: DateTime(2101),
-    );
-
-    if (pickedDate == null || !mounted) return;
-
     final TimeOfDay? pickedTime = await showTimePicker(
       context: context,
-      initialTime: TimeOfDay.fromDateTime(now),
+      initialTime: TimeOfDay.now(),
+      builder: (BuildContext context, Widget? child) {
+        return MediaQuery(
+          data: MediaQuery.of(context).copyWith(alwaysUse24HourFormat: false),
+          child: child ?? const SizedBox.shrink(),
+        );
+      },
     );
 
     if (pickedTime == null) return;
+
+    if (!mounted) return;
+
+    final DateTime? pickedDate = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime.now(),
+      lastDate: DateTime(2101),
+    );
+
+    if (pickedDate == null) return;
 
     final DateTime finalDateTime = DateTime(
       pickedDate.year,
@@ -56,7 +71,16 @@ class SelectLocationState extends State<SelectLocation> {
       pickedTime.minute,
     );
 
-    if (finalDateTime.isBefore(DateTime.now())) return;
+    if (finalDateTime.isBefore(DateTime.now())) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Please select a future date and time'),
+          backgroundColor: Colors.red,
+        ),
+      );
+      return;
+    }
 
     int newId = DateTime.now().millisecondsSinceEpoch.remainder(100000);
     Alarm newAlarm = Alarm(id: newId, dateTime: finalDateTime);
@@ -69,6 +93,7 @@ class SelectLocationState extends State<SelectLocation> {
 
     setState(() {
       _alarms.add(newAlarm);
+      _alarms.sort((a, b) => a.dateTime.compareTo(b.dateTime));
     });
   }
 
@@ -167,31 +192,21 @@ class SelectLocationState extends State<SelectLocation> {
                 ),
               ),
               const SizedBox(height: 20),
-              _alarms.isEmpty
-                  ? const Center(
-                      child: Padding(
-                        padding: EdgeInsets.all(32.0),
-                        child: Text(
-                          "No alarms set. Tap '+' to add one.",
-                          style: TextStyle(color: Colors.white70),
-                        ),
-                      ),
-                    )
-                  : ListView.separated(
-                      shrinkWrap: true,
-                      physics: const NeverScrollableScrollPhysics(),
-                      itemCount: _alarms.length,
-                      separatorBuilder: (context, index) =>
-                          const SizedBox(height: 12),
-                      itemBuilder: (context, index) {
-                        final alarm = _alarms[index];
-                        return AlarmBox(
-                          dateTime: alarm.dateTime,
-                          isActive: alarm.isActive,
-                          onToggle: (value) => _handleAlarmToggle(alarm, value),
-                        );
-                      },
-                    ),
+              ListView.separated(
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                itemCount: _alarms.length,
+                separatorBuilder: (context, index) =>
+                    const SizedBox(height: 12),
+                itemBuilder: (context, index) {
+                  final alarm = _alarms[index];
+                  return AlarmBox(
+                    dateTime: alarm.dateTime,
+                    isActive: alarm.isActive,
+                    onToggle: (value) => _handleAlarmToggle(alarm, value),
+                  );
+                },
+              ),
             ],
           ),
         ),
@@ -199,7 +214,9 @@ class SelectLocationState extends State<SelectLocation> {
       floatingActionButton: Transform.translate(
         offset: const Offset(0, -90),
         child: FloatingActionButton(
-          onPressed: _pickDateTime,
+          onPressed: () async {
+            await _pickDateTime();
+          },
           backgroundColor: const Color(0XFF211A46),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(30),
